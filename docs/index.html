@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ViroDraw - Browser-Based Image & Slides Creator</title>
+  <meta name="description" content="A browser-based tool to simplify image and slides creation. Open-source visual canvas editor for hero images, social cards, presentation slides, and more.">
+  <meta property="og:title" content="ViroDraw - Browser-Based Image & Slides Creator">
+  <meta property="og:description" content="Design hero images, social cards, presentation slides, and more from a visual canvas editor that runs entirely in the browser.">
+  <meta property="og:image" content="https://raw.githubusercontent.com/BigDataBoutique/virodraw/master/assets/screenshot.png">
+  <meta property="og:type" content="website">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      color: #1a1a2e;
+      line-height: 1.6;
+      background: #fafafa;
+    }
+
+    a { color: #6c5ce7; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .hero {
+      background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+      color: white;
+      padding: 4rem 2rem 3rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+
+    .hero .buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .hero .buttons a {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: transform 0.15s;
+    }
+
+    .hero .buttons a:hover { transform: translateY(-2px); }
+
+    .btn-primary {
+      background: white;
+      color: #6c5ce7;
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.15);
+      color: white;
+      border: 2px solid rgba(255,255,255,0.4);
+    }
+
+    .screenshot {
+      max-width: 900px;
+      margin: -2rem auto 0;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .screenshot img {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .features {
+      padding: 4rem 0;
+    }
+
+    .features h2 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .feature-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .feature-card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 0.5rem;
+      color: #6c5ce7;
+    }
+
+    .feature-card p {
+      color: #555;
+      font-size: 0.95rem;
+    }
+
+    .getting-started {
+      background: white;
+      padding: 3rem 0;
+    }
+
+    .getting-started h2 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .getting-started pre {
+      background: #1a1a2e;
+      color: #e0e0e0;
+      padding: 1.25rem 1.5rem;
+      border-radius: 10px;
+      overflow-x: auto;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .getting-started pre code { color: inherit; }
+
+    .getting-started h3 {
+      margin: 1.5rem 0 0.75rem;
+      font-size: 1.1rem;
+    }
+
+    .tech-stack {
+      padding: 3rem 0;
+    }
+
+    .tech-stack h2 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .tech-list {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      list-style: none;
+      font-size: 1rem;
+    }
+
+    .tech-list li {
+      background: white;
+      padding: 0.5rem 1.25rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #888;
+      font-size: 0.9rem;
+      border-top: 1px solid #eee;
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 2rem; }
+      .hero p { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero">
+    <h1>ViroDraw</h1>
+    <p>A browser-based tool to simplify image and slides creation. Design hero images, social cards, presentation slides, and more. Built by <a href="https://bigdataboutique.com/" style="color: white; text-decoration: underline;">BigData Boutique</a>.</p>
+    <div class="buttons">
+      <a href="https://github.com/BigDataBoutique/virodraw" class="btn-primary">View on GitHub</a>
+      <a href="https://github.com/BigDataBoutique/virodraw#getting-started" class="btn-secondary">Get Started</a>
+    </div>
+  </section>
+
+  <div class="screenshot">
+    <img src="https://raw.githubusercontent.com/BigDataBoutique/virodraw/master/assets/screenshot.png" alt="ViroDraw screenshot showing the canvas editor">
+  </div>
+
+  <div class="container">
+    <section class="features">
+      <h2>Features</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <h3>Visual Canvas Editor</h3>
+          <p>Drag-and-drop element positioning powered by Konva.js. Configurable dimensions, auto-scaling viewport, keyboard shortcuts, and transform handles.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Rich Text Styling</h3>
+          <p>Multiple text elements with Google Fonts support, font style options, alignment, color picker, opacity, rotation, drop shadow, stroke, letter spacing, and more.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Image Support</h3>
+          <p>Add images from URL, file upload, drag-and-drop, or clipboard paste. Persistent image library, styling options, and transform handles.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Backgrounds</h3>
+          <p>Set backgrounds from URL or file upload with auto cover-scale. Recently used backgrounds stored locally for quick reuse.</p>
+        </div>
+        <div class="feature-card">
+          <h3>YAML Configuration</h3>
+          <p>Save and load canvas state as YAML. Create reusable templates with canvas size, background, text elements, images, fonts, and export format.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Flexible Export</h3>
+          <p>Download your canvas as WebP, PNG, or JPG. Server-side save to disk when running with the backend.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section class="getting-started">
+    <div class="container">
+      <h2>Getting Started</h2>
+
+      <h3>Run with Docker</h3>
+      <pre><code>docker build -t virodraw .
+docker run -p 8000:8000 virodraw</code></pre>
+
+      <h3>Run locally (development)</h3>
+      <pre><code># Frontend
+cd frontend
+npm install
+npm run dev
+
+# Backend
+cd backend
+pip install -r requirements.txt
+uvicorn backend.main:app --reload</code></pre>
+    </div>
+  </section>
+
+  <div class="container">
+    <section class="tech-stack">
+      <h2>Tech Stack</h2>
+      <ul class="tech-list">
+        <li>React 19</li>
+        <li>TypeScript</li>
+        <li>Vite</li>
+        <li>react-konva</li>
+        <li>Tailwind CSS 4</li>
+        <li>Python FastAPI</li>
+        <li>Docker</li>
+      </ul>
+    </section>
+  </div>
+
+  <footer>
+    Open source by <a href="https://bigdataboutique.com/">BigData Boutique</a>. Contributions welcome.
+  </footer>
+
+</body>
+</html>
