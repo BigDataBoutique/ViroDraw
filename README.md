@@ -87,6 +87,15 @@ The backend runs at `http://localhost:8000`.
 
 ### Running with Docker
 
+A pre-built image is available from GitHub Container Registry:
+
+```bash
+docker pull ghcr.io/bigdataboutique/virodraw
+docker run -p 8000:8000 ghcr.io/bigdataboutique/virodraw
+```
+
+Or build it yourself:
+
 ```bash
 docker build -t virodraw .
 docker run -p 8000:8000 virodraw
@@ -95,8 +104,19 @@ docker run -p 8000:8000 virodraw
 Open `http://localhost:8000` in your browser. Exported images are saved to `/app/backend/output` inside the container -- mount a volume if you want to persist them:
 
 ```bash
-docker run -p 8000:8000 -v $(pwd)/output:/app/backend/output virodraw
+docker run -p 8000:8000 -v $(pwd)/output:/app/backend/output ghcr.io/bigdataboutique/virodraw
 ```
+
+### Deploying to Kubernetes
+
+Ready-made Kubernetes manifests are provided in the `k8s/` directory:
+
+```bash
+# Edit k8s/deployment.yaml to set your domain and any other configuration
+kubectl apply -f k8s/deployment.yaml
+```
+
+This creates a Deployment, Service, and Ingress. Update the Ingress host and TLS settings for your environment.
 
 ## Project Structure
 
@@ -113,6 +133,8 @@ backend/
   main.py              # FastAPI server (proxy-image, save, health, SPA serving)
   output/              # Exported images saved here
 Dockerfile             # Multi-stage build (Node.js build + Python runtime)
+k8s/
+  deployment.yaml      # Kubernetes Deployment, Service, and Ingress
 ```
 
 ## License

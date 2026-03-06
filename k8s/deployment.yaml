@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: virodraw
-          image: ghcr.io/bigdataboutique/virodraw:main
+          image: ghcr.io/bigdataboutique/virodraw:latest
           ports:
             - containerPort: 8000
           resources:

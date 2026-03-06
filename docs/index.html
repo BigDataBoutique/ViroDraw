@@ -246,8 +246,12 @@
       <h2>Getting Started</h2>
 
       <h3>Run with Docker</h3>
-      <pre><code>docker build -t virodraw .
-docker run -p 8000:8000 virodraw</code></pre>
+      <pre><code>docker pull ghcr.io/bigdataboutique/virodraw
+docker run -p 8000:8000 ghcr.io/bigdataboutique/virodraw</code></pre>
+
+      <h3>Deploy to Kubernetes</h3>
+      <pre><code>kubectl apply -f k8s/deployment.yaml</code></pre>
+      <p style="color: #555; font-size: 0.95rem; margin-top: 0.5rem;">Ready-made manifests (Deployment, Service, Ingress) are included in the <code>k8s/</code> directory. Edit the Ingress host and TLS settings for your environment.</p>
 
       <h3>Run locally (development)</h3>
       <pre><code># Frontend
