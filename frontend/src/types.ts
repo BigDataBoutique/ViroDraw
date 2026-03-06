@@ -50,7 +50,7 @@ export interface TextElement {
   fontStyle: string;
   align: string;
   width: number;
-  style: TextStyle;
+  style?: TextStyle;
 }
 
 export interface ImageShadow {
@@ -101,7 +101,7 @@ export interface ImageElement {
   width: number;
   height: number;
   image: HTMLImageElement;
-  style: ImageStyle;
+  style?: ImageStyle;
 }
 
 export interface BoundingBox {

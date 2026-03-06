@@ -1,6 +1,7 @@
 import { useRef, useEffect, useMemo } from 'react';
 import { Image, Group, Rect, Transformer } from 'react-konva';
 import type { ImageElement as ImageElementType } from '../../types';
+import { defaultImageStyle } from '../../types';
 import Konva from 'konva';
 
 interface Props {
@@ -15,7 +16,7 @@ export function ImageElementComponent({ element, isSelected, onSelect, onDragEnd
   const groupRef = useRef<Konva.Group>(null);
   const trRef = useRef<Konva.Transformer>(null);
 
-  const style = element.style;
+  const style = element.style ?? defaultImageStyle;
   const shadow = style.shadowConfig;
   const hasCornerRadius = style.cornerRadius > 0;
 
@@ -28,7 +29,8 @@ export function ImageElementComponent({ element, isSelected, onSelect, onDragEnd
 
   const clipFunc = useMemo(() => {
     if (!hasCornerRadius) return undefined;
-    return (ctx: CanvasRenderingContext2D) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return (ctx: any) => {
       const r = style.cornerRadius;
       const w = element.width;
       const h = element.height;
@@ -47,7 +49,8 @@ export function ImageElementComponent({ element, isSelected, onSelect, onDragEnd
   }, [hasCornerRadius, style.cornerRadius, element.width, element.height]);
 
   const filters = useMemo(() => {
-    const f: Array<(imageData: ImageData) => void> = [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const f: any[] = [];
     if (style.brightness !== 0) f.push(Konva.Filters.Brighten);
     return f.length > 0 ? f : undefined;
   }, [style.brightness]);
