@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: virodraw
+  labels:
+    app: virodraw
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: virodraw
+  template:
+    metadata:
+      labels:
+        app: virodraw
+    spec:
+      containers:
+        - name: virodraw
+          image: ghcr.io/bigdataboutique/virodraw:main
+          ports:
+            - containerPort: 8000
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 30
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: virodraw
+  labels:
+    app: virodraw
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 8000
+      protocol: TCP
+  selector:
+    app: virodraw
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: virodraw
+  labels:
+    app: virodraw
+  annotations:
+    # Uncomment and adjust for your ingress controller:
+    # nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+    # cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  rules:
+    - host: virodraw.example.com  # Change to your domain
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: virodraw
+                port:
+                  number: 80
+  # Uncomment for TLS:
+  # tls:
+  #   - hosts:
+  #       - virodraw.example.com
+  #     secretName: virodraw-tls
