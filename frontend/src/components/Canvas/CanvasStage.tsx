@@ -290,10 +290,10 @@ export const CanvasStage = forwardRef<CanvasStageHandle, Props>(
             </Layer>
           </Stage>
         </div>
-        <div className="flex items-center gap-2 mt-4 text-slate-400 text-xs shrink-0">
+        <a href="https://bigdataboutique.com/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 mt-4 text-slate-400 hover:text-slate-500 text-base shrink-0 transition-colors">
           <span>Built with &hearts; by</span>
-          <img src={logoGreyscale} alt="BigData Boutique" className="h-4 brightness-0 opacity-40" />
-        </div>
+          <img src={logoGreyscale} alt="BigData Boutique" className="h-8 brightness-0 opacity-40" />
+        </a>
       </div>
     );
   },

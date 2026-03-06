@@ -1,6 +1,27 @@
+# Dependencies
 node_modules/
+.venv/
+
+# Build output
 dist/
+frontend/dist/
+
+# Backend
 backend/output/
 backend/__pycache__/
-.venv/
 *.pyc
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.*

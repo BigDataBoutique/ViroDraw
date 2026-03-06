@@ -1,7 +1,31 @@
-node_modules
-frontend/node_modules
-frontend/dist
-backend/output
-backend/__pycache__
-.venv
-.git
+# Dependencies (rebuilt in Docker)
+node_modules/
+frontend/node_modules/
+.venv/
+
+# Build output (rebuilt in Docker)
+frontend/dist/
+
+# Backend output
+backend/output/
+backend/__pycache__/
+*.pyc
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docs
+README.md
+LICENSE
+
+# Claude
+.claude/
