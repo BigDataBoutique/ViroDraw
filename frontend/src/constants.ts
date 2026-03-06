@@ -1,7 +1,8 @@
 export const DEFAULT_WIDTH = 1200;
 export const DEFAULT_HEIGHT = 675;
 
-export const FONTS = [
+export const FALLBACK_FONTS = [
+  'Helvetica Neue',
   'Arial',
   'Helvetica',
   'Georgia',
@@ -9,6 +10,8 @@ export const FONTS = [
   'Courier New',
   'Verdana',
   'Impact',
+  'Trebuchet MS',
+  'Comic Sans MS',
 ];
 
 export const COLORS = [
