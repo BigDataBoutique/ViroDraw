@@ -27,5 +27,11 @@ Thumbs.db
 README.md
 LICENSE
 
+# CI/CD & non-app directories
+.github/
+k8s/
+docs/
+assets/
+
 # Claude
 .claude/
