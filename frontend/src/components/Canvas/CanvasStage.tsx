@@ -13,6 +13,10 @@ import { persistImage } from '../../utils/imageLibrary';
 interface Props {
   state: CanvasState;
   dispatch: React.Dispatch<CanvasAction>;
+  undo: () => void;
+  redo: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
 }
 
 export interface CanvasStageHandle {
@@ -20,7 +24,7 @@ export interface CanvasStageHandle {
 }
 
 export const CanvasStage = forwardRef<CanvasStageHandle, Props>(
-  function CanvasStage({ state, dispatch }, ref) {
+  function CanvasStage({ state, dispatch, undo, redo, canUndo, canRedo }, ref) {
     const stageRef = useRef<Konva.Stage>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const [scale, setScale] = useState(1);
@@ -48,6 +52,20 @@ export const CanvasStage = forwardRef<CanvasStageHandle, Props>(
       const handleKeyDown = (e: KeyboardEvent) => {
         const tag = (e.target as HTMLElement).tagName;
         const isInput = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
+
+        // Undo/Redo from anywhere (except inputs)
+        if ((e.ctrlKey || e.metaKey) && !isInput) {
+          if (e.key === 'z' && !e.shiftKey) {
+            e.preventDefault();
+            undo();
+            return;
+          }
+          if (e.key === 'y' || (e.key === 'z' && e.shiftKey)) {
+            e.preventDefault();
+            redo();
+            return;
+          }
+        }
 
         // Escape deselects from anywhere
         if (e.key === 'Escape') {
@@ -95,7 +113,7 @@ export const CanvasStage = forwardRef<CanvasStageHandle, Props>(
       };
       window.addEventListener('keydown', handleKeyDown);
       return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [state.selectedId, state.images, state.texts, dispatch]);
+    }, [state.selectedId, state.images, state.texts, dispatch, undo, redo]);
 
     useImperativeHandle(ref, () => ({
       toBlob: (mimeType: string) => {
@@ -229,6 +247,31 @@ export const CanvasStage = forwardRef<CanvasStageHandle, Props>(
         onClick={handleContainerClick}
         onContextMenu={handleContextMenu}
       >
+        {/* Undo / Redo toolbar */}
+        <div className="flex items-center gap-1 mb-2 shrink-0">
+          <button
+            onClick={undo}
+            disabled={!canUndo}
+            className="p-1.5 rounded-md text-slate-500 hover:text-slate-700 hover:bg-white/80 disabled:opacity-30 disabled:cursor-default transition-colors cursor-pointer"
+            title="Undo (Ctrl+Z)"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4">
+              <polyline points="1 4 1 10 7 10" />
+              <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+            </svg>
+          </button>
+          <button
+            onClick={redo}
+            disabled={!canRedo}
+            className="p-1.5 rounded-md text-slate-500 hover:text-slate-700 hover:bg-white/80 disabled:opacity-30 disabled:cursor-default transition-colors cursor-pointer"
+            title="Redo (Ctrl+Y)"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4">
+              <polyline points="23 4 23 10 17 10" />
+              <path d="M20.49 15a9 9 0 1 1-2.13-9.36L23 10" />
+            </svg>
+          </button>
+        </div>
         <div
           className="flex-shrink-0"
           style={{
@@ -249,6 +292,8 @@ export const CanvasStage = forwardRef<CanvasStageHandle, Props>(
                 width={width}
                 height={height}
                 backgroundImage={state.backgroundImage}
+                backgroundColor={state.backgroundColor}
+                backgroundGradient={state.backgroundGradient}
               />
             </Layer>
             <Layer>

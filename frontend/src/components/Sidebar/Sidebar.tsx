@@ -46,9 +46,8 @@ const TABS = [
     tooltip: 'Add logos and images to the canvas',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5">
-        <rect x="2" y="2" width="20" height="20" rx="2" />
-        <circle cx="8" cy="8" r="2" />
-        <path d="M2 15l6-6 4 4 3-3 7 7" />
+        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+        <circle cx="12" cy="13" r="4" />
       </svg>
     ),
   },
@@ -148,7 +147,7 @@ export function Sidebar({ state, dispatch, stageRef }: Props) {
       {/* Tab content */}
       <div className="flex-1 overflow-y-auto p-4">
         {activeTab === 'background' && (
-          <BackgroundPanel config={state.config} dispatch={dispatch} />
+          <BackgroundPanel config={state.config} backgroundColor={state.backgroundColor} backgroundGradient={state.backgroundGradient} dispatch={dispatch} />
         )}
         {activeTab === 'text' && (
           <TextPanel state={state} dispatch={dispatch} />

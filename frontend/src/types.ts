@@ -3,6 +3,12 @@ export interface CanvasConfig {
   height: number;
 }
 
+export interface BackgroundGradient {
+  type: 'linear' | 'radial';
+  angle: number;
+  colorStops: { offset: number; color: string }[];
+}
+
 export interface TextShadow {
   enabled: boolean;
   color: string;
@@ -116,6 +122,8 @@ export type ExportFormat = 'webp' | 'png' | 'jpg';
 export interface CanvasState {
   config: CanvasConfig;
   backgroundImage: ImageElement | null;
+  backgroundColor: string;
+  backgroundGradient: BackgroundGradient | null;
   images: ImageElement[];
   texts: TextElement[];
   boundingBox: BoundingBox | null;
@@ -134,4 +142,6 @@ export type CanvasAction =
   | { type: 'REMOVE_TEXT'; payload: string }
   | { type: 'SET_BOUNDING_BOX'; payload: BoundingBox | null }
   | { type: 'SET_EXPORT_FORMAT'; payload: ExportFormat }
-  | { type: 'SET_SELECTED'; payload: string | null };
+  | { type: 'SET_SELECTED'; payload: string | null }
+  | { type: 'SET_BACKGROUND_COLOR'; payload: string }
+  | { type: 'SET_BACKGROUND_GRADIENT'; payload: BackgroundGradient | null };

@@ -1,5 +1,5 @@
 import yaml from 'js-yaml';
-import type { CanvasAction, CanvasState, TextElement, ExportFormat } from '../types';
+import type { CanvasAction, CanvasState, TextElement, ExportFormat, BackgroundGradient } from '../types';
 import { DEFAULT_WIDTH, DEFAULT_HEIGHT } from '../constants';
 import { coverScale, logoPosition } from './autoLayout';
 import { proxyImage } from './api';
@@ -7,7 +7,15 @@ import { persistImage as persistImageToLibrary } from './imageLibrary';
 
 interface ConfigYaml {
   canvas?: { width?: number; height?: number };
-  background?: { color?: string; image?: string };
+  background?: {
+    color?: string;
+    image?: string;
+    gradient?: {
+      type?: 'linear' | 'radial';
+      angle?: number;
+      colorStops?: Array<{ offset: number; color: string }>;
+    };
+  };
   text?: {
     defaults?: {
       fontFamily?: string;
@@ -131,7 +139,25 @@ export async function applyConfig(
     }
   }
 
-  // Background
+  // Background color
+  if (config.background?.color) {
+    dispatch({ type: 'SET_BACKGROUND_COLOR', payload: config.background.color });
+  }
+
+  // Background gradient
+  if (config.background?.gradient) {
+    const g = config.background.gradient;
+    if (g.colorStops && g.colorStops.length >= 2) {
+      const gradient: BackgroundGradient = {
+        type: g.type || 'linear',
+        angle: g.angle ?? 135,
+        colorStops: g.colorStops,
+      };
+      dispatch({ type: 'SET_BACKGROUND_GRADIENT', payload: gradient });
+    }
+  }
+
+  // Background image
   if (config.background?.image) {
     try {
       const img = await loadImageWithFallback(config.background.image);
@@ -230,12 +256,25 @@ export function stateToYaml(state: CanvasState, webFonts: string[]): string {
 
   obj.canvas = { width: state.config.width, height: state.config.height };
 
+  const bgObj: Record<string, unknown> = {};
+  if (state.backgroundColor !== '#FFFFFF') {
+    bgObj.color = state.backgroundColor;
+  }
+  if (state.backgroundGradient) {
+    bgObj.gradient = {
+      type: state.backgroundGradient.type,
+      angle: state.backgroundGradient.angle,
+      colorStops: state.backgroundGradient.colorStops,
+    };
+  }
   if (state.backgroundImage) {
     const src = state.backgroundImage.src;
-    // Only include URL-based backgrounds (not data URLs which are too large)
     if (src && !src.startsWith('data:')) {
-      obj.background = { image: src };
+      bgObj.image = src;
     }
+  }
+  if (Object.keys(bgObj).length > 0) {
+    obj.background = bgObj;
   }
 
   if (state.exportFormat !== 'webp') {
