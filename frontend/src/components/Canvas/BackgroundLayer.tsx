@@ -48,11 +48,16 @@ export function BackgroundLayer({ width, height, backgroundImage, backgroundColo
       <Rect {...rectProps} />
       {backgroundImage && (
         <Image
-          x={backgroundImage.x}
-          y={backgroundImage.y}
+          x={backgroundImage.x + backgroundImage.width / 2}
+          y={backgroundImage.y + backgroundImage.height / 2}
           width={backgroundImage.width}
           height={backgroundImage.height}
           image={backgroundImage.image}
+          offsetX={backgroundImage.width / 2}
+          offsetY={backgroundImage.height / 2}
+          rotation={backgroundImage.style?.rotation ?? 0}
+          scaleX={backgroundImage.style?.flipX ? -1 : 1}
+          scaleY={backgroundImage.style?.flipY ? -1 : 1}
         />
       )}
     </>

@@ -78,6 +78,26 @@ function reducer(state: CanvasState, action: CanvasAction): CanvasState {
       return { ...state, backgroundColor: action.payload, backgroundGradient: null };
     case 'SET_BACKGROUND_GRADIENT':
       return { ...state, backgroundGradient: action.payload };
+    case 'UPDATE_BACKGROUND_STYLE':
+      if (!state.backgroundImage) return state;
+      return {
+        ...state,
+        backgroundImage: {
+          ...state.backgroundImage,
+          style: { ...state.backgroundImage.style!, ...action.payload },
+        },
+      };
+    case 'RESET_CANVAS':
+      return {
+        ...state,
+        backgroundImage: null,
+        backgroundColor: '#FFFFFF',
+        backgroundGradient: null,
+        images: [],
+        texts: [],
+        boundingBox: null,
+        selectedId: null,
+      };
     default:
       return state;
   }

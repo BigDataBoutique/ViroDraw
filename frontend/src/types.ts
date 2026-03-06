@@ -144,4 +144,6 @@ export type CanvasAction =
   | { type: 'SET_EXPORT_FORMAT'; payload: ExportFormat }
   | { type: 'SET_SELECTED'; payload: string | null }
   | { type: 'SET_BACKGROUND_COLOR'; payload: string }
-  | { type: 'SET_BACKGROUND_GRADIENT'; payload: BackgroundGradient | null };
+  | { type: 'SET_BACKGROUND_GRADIENT'; payload: BackgroundGradient | null }
+  | { type: 'UPDATE_BACKGROUND_STYLE'; payload: Partial<ImageStyle> }
+  | { type: 'RESET_CANVAS' };

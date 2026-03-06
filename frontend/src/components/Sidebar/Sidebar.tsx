@@ -126,6 +126,19 @@ export function Sidebar({ state, dispatch, stageRef }: Props) {
         <p className="text-[13px] text-slate-400 mt-2.5 tracking-wide">Simplify image and slides creation</p>
       </div>
 
+      {/* New button */}
+      <div className="px-4 py-2 border-b border-slate-200">
+        <button
+          onClick={() => dispatch({ type: 'RESET_CANVAS' })}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-600 hover:text-indigo-600 bg-white hover:bg-indigo-50 border border-slate-200 hover:border-indigo-300 rounded-md transition-colors cursor-pointer"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-3.5 h-3.5">
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+          New
+        </button>
+      </div>
+
       {/* Tab bar */}
       <div className="flex px-3 gap-1 border-b border-slate-200 bg-white/60">
         {TABS.map((tab) => (
@@ -147,7 +160,7 @@ export function Sidebar({ state, dispatch, stageRef }: Props) {
       {/* Tab content */}
       <div className="flex-1 overflow-y-auto p-4">
         {activeTab === 'background' && (
-          <BackgroundPanel config={state.config} backgroundColor={state.backgroundColor} backgroundGradient={state.backgroundGradient} dispatch={dispatch} />
+          <BackgroundPanel config={state.config} backgroundColor={state.backgroundColor} backgroundGradient={state.backgroundGradient} backgroundImage={state.backgroundImage} dispatch={dispatch} />
         )}
         {activeTab === 'text' && (
           <TextPanel state={state} dispatch={dispatch} />

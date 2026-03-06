@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import type { CanvasConfig, CanvasAction, BackgroundGradient } from '../../types';
+import type { CanvasConfig, CanvasAction, BackgroundGradient, ImageElement } from '../../types';
 import { useImageLoader } from '../../hooks/useImageLoader';
 import { ImageUploader } from '../common/ImageUploader';
 import { coverScale } from '../../utils/autoLayout';
@@ -92,10 +92,11 @@ interface Props {
   config: CanvasConfig;
   backgroundColor: string;
   backgroundGradient: BackgroundGradient | null;
+  backgroundImage: ImageElement | null;
   dispatch: React.Dispatch<CanvasAction>;
 }
 
-export function BackgroundPanel({ config, backgroundColor, backgroundGradient, dispatch }: Props) {
+export function BackgroundPanel({ config, backgroundColor, backgroundGradient, backgroundImage, dispatch }: Props) {
   const { loadImage, loading, error } = useImageLoader();
   const [storedBgs, setStoredBgs] = useState<StoredBackground[]>([]);
   const [mode, setMode] = useState<BgMode>('color');
@@ -160,7 +161,7 @@ export function BackgroundPanel({ config, backgroundColor, backgroundGradient, d
         <button className={tabClass('color')} onClick={() => { setMode('color'); dispatch({ type: 'SET_BACKGROUND_COLOR', payload: backgroundColor }); }}>
           Color
         </button>
-        <button className={tabClass('gradient')} onClick={() => { setMode('gradient'); updateGradient(gradient); }}>
+        <button className={tabClass('gradient')} onClick={() => setMode('gradient')}>
           Gradient
         </button>
         <button className={tabClass('image')} onClick={() => setMode('image')}>
@@ -203,6 +204,20 @@ export function BackgroundPanel({ config, backgroundColor, backgroundGradient, d
 
       {mode === 'gradient' && (
         <div className="space-y-3">
+          <Section title="No gradient">
+            <button
+              onClick={() => dispatch({ type: 'SET_BACKGROUND_GRADIENT', payload: null })}
+              className={`w-8 h-8 rounded-md border cursor-pointer transition-all relative overflow-hidden ${
+                !backgroundGradient ? 'border-indigo-500 ring-1 ring-indigo-500' : 'border-slate-200 hover:border-slate-400'
+              }`}
+              style={{ background: '#fff' }}
+              title="No gradient"
+            >
+              <svg viewBox="0 0 32 32" className="absolute inset-0 w-full h-full">
+                <line x1="2" y1="30" x2="30" y2="2" stroke="#ef4444" strokeWidth="2" />
+              </svg>
+            </button>
+          </Section>
           <Section title="Gradient colors">
             <div className="space-y-2">
               {gradient.colorStops.map((stop, i) => (
@@ -288,6 +303,31 @@ export function BackgroundPanel({ config, backgroundColor, backgroundGradient, d
             </svg>
             Clear background image
           </button>
+
+          {backgroundImage && (
+            <Section title="Transform">
+              <SliderRow label="Rotation" value={backgroundImage.style?.rotation ?? 0} min={0} max={360} step={1} unit="°"
+                onChange={(v) => dispatch({ type: 'UPDATE_BACKGROUND_STYLE', payload: { rotation: v } })} />
+              <div className="flex gap-2 mt-2">
+                <button
+                  onClick={() => dispatch({ type: 'UPDATE_BACKGROUND_STYLE', payload: { flipX: !(backgroundImage.style?.flipX ?? false) } })}
+                  className={`flex-1 py-1.5 text-xs font-medium rounded-md border cursor-pointer transition-colors ${
+                    backgroundImage.style?.flipX ? 'border-indigo-500 bg-indigo-50 text-indigo-600' : 'border-slate-200 text-slate-500 hover:border-slate-400'
+                  }`}
+                >
+                  Flip H
+                </button>
+                <button
+                  onClick={() => dispatch({ type: 'UPDATE_BACKGROUND_STYLE', payload: { flipY: !(backgroundImage.style?.flipY ?? false) } })}
+                  className={`flex-1 py-1.5 text-xs font-medium rounded-md border cursor-pointer transition-colors ${
+                    backgroundImage.style?.flipY ? 'border-indigo-500 bg-indigo-50 text-indigo-600' : 'border-slate-200 text-slate-500 hover:border-slate-400'
+                  }`}
+                >
+                  Flip V
+                </button>
+              </div>
+            </Section>
+          )}
 
           {storedBgs.length > 0 && (
             <div className="space-y-2">
