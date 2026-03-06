@@ -3,6 +3,42 @@ export interface CanvasConfig {
   height: number;
 }
 
+export interface TextShadow {
+  enabled: boolean;
+  color: string;
+  blur: number;
+  offsetX: number;
+  offsetY: number;
+  opacity: number;
+}
+
+export interface TextStyle {
+  opacity: number;
+  rotation: number;
+  shadowConfig: TextShadow;
+  strokeColor: string;
+  strokeWidth: number;
+  letterSpacing: number;
+  lineHeight: number;
+}
+
+export const defaultTextStyle: TextStyle = {
+  opacity: 1,
+  rotation: 0,
+  shadowConfig: {
+    enabled: false,
+    color: '#000000',
+    blur: 10,
+    offsetX: 2,
+    offsetY: 2,
+    opacity: 0.5,
+  },
+  strokeColor: '#000000',
+  strokeWidth: 0,
+  letterSpacing: 0,
+  lineHeight: 1,
+};
+
 export interface TextElement {
   id: string;
   text: string;
@@ -14,7 +50,48 @@ export interface TextElement {
   fontStyle: string;
   align: string;
   width: number;
+  style: TextStyle;
 }
+
+export interface ImageShadow {
+  enabled: boolean;
+  color: string;
+  blur: number;
+  offsetX: number;
+  offsetY: number;
+  opacity: number;
+}
+
+export interface ImageStyle {
+  opacity: number;
+  cornerRadius: number;
+  rotation: number;
+  shadowConfig: ImageShadow;
+  strokeColor: string;
+  strokeWidth: number;
+  flipX: boolean;
+  flipY: boolean;
+  brightness: number;
+}
+
+export const defaultImageStyle: ImageStyle = {
+  opacity: 1,
+  cornerRadius: 0,
+  rotation: 0,
+  shadowConfig: {
+    enabled: false,
+    color: '#000000',
+    blur: 10,
+    offsetX: 4,
+    offsetY: 4,
+    opacity: 0.5,
+  },
+  strokeColor: '#000000',
+  strokeWidth: 0,
+  flipX: false,
+  flipY: false,
+  brightness: 0,
+};
 
 export interface ImageElement {
   id: string;
@@ -24,6 +101,7 @@ export interface ImageElement {
   width: number;
   height: number;
   image: HTMLImageElement;
+  style: ImageStyle;
 }
 
 export interface BoundingBox {

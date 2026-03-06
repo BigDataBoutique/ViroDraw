@@ -1,6 +1,7 @@
 import { useRef, useEffect } from 'react';
 import { Text, Transformer } from 'react-konva';
 import type { TextElement as TextElementType } from '../../types';
+import { defaultTextStyle } from '../../types';
 import type Konva from 'konva';
 
 interface Props {
@@ -14,6 +15,9 @@ interface Props {
 export function TextElementComponent({ element, isSelected, onSelect, onDragEnd, onTransformEnd }: Props) {
   const shapeRef = useRef<Konva.Text>(null);
   const trRef = useRef<Konva.Transformer>(null);
+
+  const style = element.style ?? defaultTextStyle;
+  const shadow = style.shadowConfig;
 
   useEffect(() => {
     if (isSelected && trRef.current && shapeRef.current) {
@@ -35,6 +39,18 @@ export function TextElementComponent({ element, isSelected, onSelect, onDragEnd,
         fontStyle={element.fontStyle}
         align={element.align}
         width={element.width}
+        opacity={style.opacity}
+        rotation={style.rotation}
+        letterSpacing={style.letterSpacing}
+        lineHeight={style.lineHeight}
+        stroke={style.strokeWidth > 0 ? style.strokeColor : undefined}
+        strokeWidth={style.strokeWidth}
+        shadowEnabled={shadow.enabled}
+        shadowColor={shadow.enabled ? shadow.color : undefined}
+        shadowBlur={shadow.enabled ? shadow.blur : undefined}
+        shadowOffsetX={shadow.enabled ? shadow.offsetX : undefined}
+        shadowOffsetY={shadow.enabled ? shadow.offsetY : undefined}
+        shadowOpacity={shadow.enabled ? shadow.opacity : undefined}
         draggable
         onClick={onSelect}
         onTap={onSelect}

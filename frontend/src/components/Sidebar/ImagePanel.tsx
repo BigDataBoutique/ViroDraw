@@ -4,6 +4,7 @@ import { useImageLoader } from '../../hooks/useImageLoader';
 import { ImageUploader } from '../common/ImageUploader';
 import { logoPosition } from '../../utils/autoLayout';
 import { getStoredImages, persistImage, removeStoredImage, onLibraryChange, type StoredImage } from '../../utils/imageLibrary';
+import { ImageActions } from './ImageActions';
 
 interface Props {
   state: CanvasState;
@@ -114,6 +115,11 @@ export function ImagePanel({ state, dispatch }: Props) {
             </div>
           ))}
         </div>
+      )}
+
+      {/* Actions for selected image */}
+      {state.selectedId && state.images.some(img => img.id === state.selectedId) && (
+        <ImageActions state={state} dispatch={dispatch} />
       )}
 
       {/* Stored image library — also a drop zone */}

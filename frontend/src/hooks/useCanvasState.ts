@@ -1,5 +1,6 @@
 import { useReducer } from 'react';
 import type { CanvasState, CanvasAction } from '../types';
+import { defaultImageStyle, defaultTextStyle } from '../types';
 import { DEFAULT_WIDTH, DEFAULT_HEIGHT } from '../constants';
 
 const initialState: CanvasState = {
@@ -17,9 +18,20 @@ function reducer(state: CanvasState, action: CanvasAction): CanvasState {
     case 'SET_CONFIG':
       return { ...state, config: action.payload };
     case 'SET_BACKGROUND':
-      return { ...state, backgroundImage: action.payload };
+      return {
+        ...state,
+        backgroundImage: action.payload
+          ? { ...action.payload, style: action.payload.style ?? { ...defaultImageStyle, shadowConfig: { ...defaultImageStyle.shadowConfig } } }
+          : null,
+      };
     case 'ADD_IMAGE':
-      return { ...state, images: [...state.images, action.payload] };
+      return {
+        ...state,
+        images: [
+          ...state.images,
+          { ...action.payload, style: action.payload.style ?? { ...defaultImageStyle, shadowConfig: { ...defaultImageStyle.shadowConfig } } },
+        ],
+      };
     case 'UPDATE_IMAGE':
       return {
         ...state,
@@ -34,7 +46,13 @@ function reducer(state: CanvasState, action: CanvasAction): CanvasState {
         selectedId: state.selectedId === action.payload ? null : state.selectedId,
       };
     case 'ADD_TEXT':
-      return { ...state, texts: [...state.texts, action.payload] };
+      return {
+        ...state,
+        texts: [
+          ...state.texts,
+          { ...action.payload, style: action.payload.style ?? { ...defaultTextStyle, shadowConfig: { ...defaultTextStyle.shadowConfig } } },
+        ],
+      };
     case 'UPDATE_TEXT':
       return {
         ...state,

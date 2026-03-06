@@ -3,6 +3,7 @@ import type { CanvasState, CanvasAction } from '../../types';
 import { COLORS } from '../../constants';
 import { calcFontSize, centerTextPosition } from '../../utils/autoLayout';
 import { useFonts } from '../../hooks/useFonts';
+import { TextActions } from './TextActions';
 
 const ALIGNS = ['left', 'center', 'right'] as const;
 
@@ -404,6 +405,11 @@ export function TextPanel({ state, dispatch }: Props) {
             Remove text
           </button>
         </div>
+      )}
+
+      {/* Actions & Styling for selected text */}
+      {selectedText && (
+        <TextActions state={state} dispatch={dispatch} />
       )}
 
       {/* Text element list */}
